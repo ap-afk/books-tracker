@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 // Ensure all axios requests use the backend URL (including port)
-axios.defaults.baseURL = "http://192.168.31.3:3000";
+axios.defaults.baseURL = "https://books-tracker-backend-k6hy.onrender.com/";
 
 
 export default function App() {
