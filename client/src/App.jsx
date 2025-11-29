@@ -1,5 +1,9 @@
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+// Ensure all axios requests use the backend URL (including port)
+axios.defaults.baseURL = "http://192.168.31.3:3000";
+
 
 export default function App() {
   const [books, setBooks] = useState([]);
@@ -18,7 +22,7 @@ export default function App() {
   // Fetch all books
   const fetchBooks = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/books");
+      const res = await axios.get("/books");
       setBooks(res.data);
     } catch (err) {
       console.error(err);
@@ -46,7 +50,7 @@ export default function App() {
     e.preventDefault();
     setMessage("");
     try {
-      const res = await axios.post("http://localhost:3000/books", formData);
+      const res = await axios.post("/books", formData);
       setMessage("Book added successfully!");
       setBooks([...books, res.data]);
       setFormData({
@@ -65,7 +69,7 @@ export default function App() {
   // Handle like button click
   const handleLike = async (bookId) => {
     try {
-      const res = await axios.post(`http://localhost:3000/books/${bookId}/like`, { userId });
+      const res = await axios.post(`/books/${bookId}/like`, { userId });
       setBooks((prevBooks) =>
         prevBooks.map((book) =>
           book._id === bookId ? { ...book, likes: res.data.likes, likedBy: [...(book.likedBy || []), userId] } : book
@@ -81,64 +85,67 @@ export default function App() {
     <div className="min-h-screen bg-gray-100 p-6">
       <h1 className="text-3xl font-bold mb-6 text-center">Books Library</h1>
 
-      {/* Add Book Form */}
-      <div className="max-w-md mx-auto bg-white p-6 rounded shadow-md mb-8">
-        <h2 className="text-xl font-semibold mb-4">Add a New Book</h2>
-        {message && (
-          <div className="mb-4 text-center text-sm text-red-600">{message}</div>
-        )}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            name="title"
-            placeholder="Title"
-            value={formData.title}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded"
-            required
-          />
-          <input
-            type="text"
-            name="author"
-            placeholder="Author"
-            value={formData.author}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-          <input
-            type="date"
-            name="publishedDate"
-            placeholder="Published Date"
-            value={formData.publishedDate}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-          <input
-            type="text"
-            name="genre"
-            placeholder="Genre"
-            value={formData.genre}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-          <input
-            type="number"
-            name="pages"
-            placeholder="Pages"
-            value={formData.pages}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition"
-          >
-            Add Book
-          </button>
-        </form>
-      </div>
+        <div className="max-w-md mx-auto bg-white p-6 rounded shadow-md mb-8">
+          <h2 className="text-xl font-semibold mb-4">Add a New Book</h2>
+          {message && (
+            <div className="mb-4 text-center text-sm text-red-600">{message}</div>
+          )}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <input
+          type="text"
+          name="title"
+          placeholder="Title"
+          value={formData.title}
+          onChange={handleChange}
+          className="w-full p-2 border border-gray-300 rounded"
+          required
+            />
+            <input
+          type="text"
+          name="author"
+          placeholder="Author"
+          value={formData.author}
+          onChange={handleChange}
+          className="w-full p-2 border border-gray-300 rounded"
+          required
+            />
+            <input
+          type="date"
+          name="publishedDate"
+          placeholder="Published Date"
+          value={formData.publishedDate}
+          onChange={handleChange}
+          className="w-full p-2 border border-gray-300 rounded"
+          required
+            />
+            <input
+          type="text"
+          name="genre"
+          placeholder="Genre"
+          value={formData.genre}
+          onChange={handleChange}
+          className="w-full p-2 border border-gray-300 rounded"
+          required
+            />
+            <input
+          type="number"
+          name="pages"
+          placeholder="Pages"
+          value={formData.pages}
+          onChange={handleChange}
+          className="w-full p-2 border border-gray-300 rounded"
+          required
+            />
+            <button
+          type="submit"
+          className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition"
+            >
+          Add Book
+            </button>
+          </form>
+        </div>
 
-      {/* Books List */}
+        {/* Books List */}
       <div className="max-w-2xl mx-auto">
         <h2 className="text-2xl font-semibold mb-4">Books List</h2>
         <ul className="space-y-3">

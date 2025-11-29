@@ -12,4 +12,9 @@ const bookSchema = new mongoose.Schema({
 
 const Book = mongoose.model("Book", bookSchema);
 
+// Ensure the connection is established before exporting the model
+mongoose.connection.once('open', () => {
+  console.log("MongoDB connection established.");
+});
+
 module.exports = Book;
