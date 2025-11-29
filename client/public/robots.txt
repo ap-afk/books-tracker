@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://books-tracker-two.vercel.app/sitemap.xml
+
+# Prevent indexing of unnecessary files/folders
+Disallow: /node_modules/
+Disallow: /src/
